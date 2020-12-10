@@ -17,6 +17,7 @@ public class User implements Runnable {
     protected static final int MAX_SLEEP_TIME = 5000;
     protected static final int MIN_SLEEP_TIME = 1;
 
+    // Generating key pairs
     protected User(long id, Blockchain blockchain) {
         this.blockchain = blockchain;
         this.id = id;
@@ -31,7 +32,7 @@ public class User implements Runnable {
         return new User(id, blockchain);
     }
 
-     // Basic multithreading for calling the miners randomly after a delay
+
     @Override
     public void run() {
         Random random = new Random();
@@ -50,6 +51,7 @@ public class User implements Runnable {
         }
     }
 
+    // Performing Transaction and setting up signature for transaction
     protected boolean doTransaction() {
         User to = UserFactory.getUser(transRandom.nextInt((int) UserFactory.getNoOfUsers() + 1));
         int amount = transRandom.nextInt(100 + 1);
@@ -70,7 +72,7 @@ public class User implements Runnable {
         return name;
     }
 
-    // Names list to choose from, for Miner (names/optional)
+    // Random naming
     protected static String[] names = { "James", "Mary", "John", "Linda", "Robert", "Michael", "Sarah", "William",
             "Laya", "David", "Richard", "Lisa", "Joseph", "Thomas", "Jessica", "Charles", "Nancy", "Jyothi", "Karthik",
             "Christopher", "Jennifer", "Keerthi" };

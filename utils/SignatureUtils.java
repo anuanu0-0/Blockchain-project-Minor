@@ -3,6 +3,7 @@ package blockchain.utils;
 import java.util.*;
 import java.security.*;
 
+// Signature for a block is generated through base64 encoder
 public class SignatureUtils {
 
     // Use of RSA to generate Key-Pair
@@ -20,7 +21,7 @@ public class SignatureUtils {
     // Takes in transaction data and id of the block and returns current
     // blocks unique signature using SHA 256. Is assigned by hash function
     // in Transactions file.
-
+    //
     public static String generateSignature(String data, PrivateKey privateKey) {
         String signature = null;
 
@@ -34,7 +35,7 @@ public class SignatureUtils {
         return signature;
     }
 
-    // Verifies that the signature is unique and  convertes it back.
+    // Verifies that the signature is unique and  decodes it back.
     public static boolean verifySignature(String data, String signature, PublicKey publicKey) {
         boolean verification = false;
 

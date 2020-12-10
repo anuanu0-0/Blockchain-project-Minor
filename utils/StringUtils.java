@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Random;
 
+// Message digest to calculate crypto hash functions
 public class StringUtils {
 
     public static String applySha256(String input) {

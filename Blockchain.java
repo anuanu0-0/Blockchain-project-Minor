@@ -26,6 +26,7 @@ public class Blockchain implements Serializable {
 
         UnprocessedBlock() {
             block = null;
+            // New Constructor Object
             readWriteLock = new ReentrantReadWriteLock();
         }
 
@@ -37,6 +38,7 @@ public class Blockchain implements Serializable {
             this.block = block;
         }
 
+        // Lock read and write threads while other thread is accessing
         ReentrantReadWriteLock.ReadLock getReadLock() {
             return readWriteLock.readLock();
         }
@@ -60,12 +62,13 @@ public class Blockchain implements Serializable {
 
     private static final int BLOCK_CREATION_FREQUENCY_PER_MINUTE = 100;
     private static final int FIXED_MINING_TIME_MS = (int) ((60 * 1e3) / BLOCK_CREATION_FREQUENCY_PER_MINUTE);
-    // 15% deviation from fixed time is acceptable
+    // Setting up deviation
     private static final int ACCEPTABLE_DEVIATION_IN_MINING_TIME_MS = ((FIXED_MINING_TIME_MS * 15) / 100);
 
     private long currentMiningBlockStartTimeMs;
     private long currentMiningBlockEndTimeMs;
 
+    // Creating an AtomicLong object with initial value 1
     private final AtomicLong transactionIdCounter = new AtomicLong(1);
     private long largestTransactionIdTillPrevBlock = 0L;
     private final ReentrantReadWriteLock largestTransactionIdTillPrevBlockLock = new ReentrantReadWriteLock();
@@ -92,20 +95,23 @@ public class Blockchain implements Serializable {
         blockchain.currentMiningBlockStartTimeMs = System.currentTimeMillis();
         return blockchain;
     }
-
+    // Store transaction in Queue and transactions status
     public boolean addTransaction(Transaction transaction) {
         if (!validateTransaction(transaction)) { return false; }
         transactionQueue.add(transaction);
 
+        // Locking the block to write while the thread is processing
         unprocessedBlock.getWriteLock().lock();
         if (unprocessedBlock.getBlock() == null) {
             unprocessedBlock.setBlock(createBlock());
             currentMiningBlockStartTimeMs = System.currentTimeMillis();
         }
+        // Releasing the lock
         unprocessedBlock.getWriteLock().unlock();
         return true;
     }
 
+    // Initialize block with
     private Block createBlock() {
         largestTransactionIdTillPrevBlockLock.writeLock().lock();
         largestTransactionIdTillPrevBlock = transactionQueue.stream()
@@ -155,6 +161,7 @@ public class Blockchain implements Serializable {
         return true;
     }
 
+    // Cloning unprocessedBlock
     public Block getUnprocessedBlock() {
         try {
             return (Block) unprocessedBlock.getBlock().clone();
@@ -163,6 +170,7 @@ public class Blockchain implements Serializable {
         }
     }
 
+    // Checking the current hash and storing it as prev hash
     public boolean isValid() {
         long id = 1;
         String prevBlockHash = "0";
@@ -194,6 +202,7 @@ public class Blockchain implements Serializable {
         return transactionIdCounter.getAndIncrement();
     }
 
+    // Comparing details of current block with previous block
     private static boolean areIdenticalBlocks(Block b1, Block b2) {
         if (b1 == null || b2 == null) { return false; }
         if (b1 == b2) { return true; }
@@ -207,6 +216,7 @@ public class Blockchain implements Serializable {
         return true;
     }
 
+    // Validationg Transaction details
     private boolean validateTransaction(Transaction transaction) {
         largestTransactionIdTillPrevBlockLock.readLock().lock();
         if (transaction.getId() < largestTransactionIdTillPrevBlock) { return false; }
@@ -219,6 +229,8 @@ public class Blockchain implements Serializable {
         return true;
     }
 
+    // Defining and Initializing a user defined DS
+    // Getting values and processing unprocessed blocks & user transactions
     public int getBalance(User user, int seed) {
         class ToBeProcessedBlocks {
             int nBlocks = 0;
@@ -266,6 +278,7 @@ public class Blockchain implements Serializable {
         return balance.get();
     }
 
+    // Getting Transactions and reward for the miner
     private void processBlockForBalance(User user, AtomicInteger currBalance,Block block) {
         if (user == block.getMiner()) {
             currBalance.set(currBalance.get() + block.getMineReward());
@@ -275,6 +288,7 @@ public class Blockchain implements Serializable {
         );
     }
 
+    // Checking for debit / credit transactions
     private void processTransactionForBalance(User user, AtomicInteger currBalance,Transaction transaction) {
         if (transaction.getFrom() == user) {
             currBalance.set(currBalance.get() - transaction.getAmount());
@@ -283,6 +297,7 @@ public class Blockchain implements Serializable {
         }
     }
 
+    // Doing some static calculations
     private void updateMiningConstraints() {
         long timeTookForMining = currentMiningBlockEndTimeMs - currentMiningBlockStartTimeMs;
 

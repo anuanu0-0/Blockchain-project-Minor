@@ -3,6 +3,7 @@ package blockchain;
 import java.io.IOException;
 import blockchain.utils.*;
 
+// Serilaizing and desrializing blocks in a file
 public class BlockchainDriver {
     String fileName;
     Blockchain blockchain;

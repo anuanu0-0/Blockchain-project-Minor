@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 
-// Only for serialization and deserialization of current object(block data) in IO streams
+// Only for serialization and deserialization of current object(block data) using IO streams
 
 public class SerializationUtils {
     public static void serialize(Object obj, String fileName) throws IOException {

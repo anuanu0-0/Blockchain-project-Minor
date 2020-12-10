@@ -6,6 +6,7 @@ import java.util.List;
 import blockchain.user.Miner;
 import blockchain.utils.*;
 
+// Implementing Serialization & Overriding methods
 public class Block implements Serializable, Cloneable {
     private final long id;
     private final long timestamp;
@@ -18,13 +19,14 @@ public class Block implements Serializable, Cloneable {
     private int mineReward;
     private String transactionsToStringCached;
 
+    // Initializing block
     private Block(final long id, final List<Transaction> transactions, final String prevBlockHash) {
         this.id = id;
         this.transactions = transactions;
         this.prevBlockHash = prevBlockHash;
         timestamp = System.currentTimeMillis();
     }
-
+    //
     public static Block with(final long id, final List<Transaction> transactions, final String prevBlockHash,
             final int mineReward) {
         Block block = new Block(id, transactions, prevBlockHash);
@@ -54,13 +56,14 @@ public class Block implements Serializable, Cloneable {
             throw new Error("Something messed up!");
         }
     }
-    // Hash Functions overriding
 
+    // Overriden has functions and conditionals
     @Override
     public int hashCode() {
         return (int) id;
     }
 
+    // Check for validity / correctness of block
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -113,7 +116,7 @@ public class Block implements Serializable, Cloneable {
 
         return true;
     }
-
+    // Hash functions
     public boolean isConsistent() {
         return hash.equals(StringUtils.applySha256(toString()));
     }

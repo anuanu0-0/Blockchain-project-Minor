@@ -4,6 +4,8 @@ import java.util.Random;
 import blockchain.*;
 import blockchain.utils.*;
 
+// BLIND MINING STRATERGY IS USED AS THERE ARE NO PHYSICAL MINERS.
+
 public class Miner extends User implements Runnable {
 
     private Block currentMiningBlock = null;
@@ -37,6 +39,7 @@ public class Miner extends User implements Runnable {
         }
     }
 
+    // Perform minning of the block if not minned
     private void doMining() throws InterruptedException {
         boolean successful = false;
 
@@ -53,6 +56,7 @@ public class Miner extends User implements Runnable {
         }
     }
 
+    // Initializing magic numbers and computing hash
     private boolean blindMining() {
         String requiredPrefix = blockchain.getRequiredPrefixForHash();
         for (int i = 0; i < BLIND_REPETITIONS; i++) {
@@ -66,6 +70,7 @@ public class Miner extends User implements Runnable {
         return false;
     }
 
+    // Set current minning block
     private void updateCurrentMiningBlock() {
         Block block = blockchain.getUnprocessedBlock();
         if (currentMiningBlock == null || !currentMiningBlock.equals(block)) {

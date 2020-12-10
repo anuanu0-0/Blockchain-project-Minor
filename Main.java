@@ -6,11 +6,15 @@ import java.util.concurrent.Executors;
 
 public class Main {
 
+    // UserFactory - User related methods
+    // Executors - public class
     public static void main(String[] args) {
         var driver = BlockchainDriver.newDriver();
         var blockchain = driver.getBlockchain();
         var userFactory = UserFactory.with(blockchain);
 
+        // Creates a thread pool that reuses a fixed number of
+        // threads operating off a shared unbounded queue.
         var executor = Executors.newFixedThreadPool(20);
         for (int i = 0; i < 10; i++) {
             executor.submit(userFactory.newUser());
@@ -84,3 +88,18 @@ public class Main {
         }
     }
 }
+
+/*
+TO DO:
+Create blocks and make them secured and connected. - LinkedList : Done
+Making cryptocurrency mining for command line: generate magic numbers and store them in blocks. : Done
+Generating random numbers in several threads; when a miner finds the magic number, a blockchain is created, and mining goes on : Done
+Creating a user defined DS, storing data in the blocks: adding transaction messages to the blockchain.  : Done
+Adding encryption with private and public keys to ensure a high level of privacy and security - MessageDigest.  : Done
+Creating a cryptocurrency : starting with an amount of zero coins, and virtual miners will get a hundred for each block they mine. : Done
+Correcting Project Structure : Done
+Fixing errors (Logical) : Done Partially
+Add to Github : Done
+
+TOOLS : HASHING(+Cryptographic hashing), MULTITHREADING, (DE)SERIALIZATION, STREAM API,
+ */

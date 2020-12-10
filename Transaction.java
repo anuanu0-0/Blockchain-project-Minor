@@ -2,6 +2,7 @@ package blockchain;
 
 import blockchain.user.User;
 
+// Interface extends Key
 import java.security.PublicKey;
 
 public class Transaction {
@@ -13,6 +14,7 @@ public class Transaction {
     private String signature;
     private PublicKey publicKey;
 
+    // Assignes Transaction details
     public Transaction(long transactionId, User from, User to, int amount, PublicKey publicKey) {
         this.transactionId = transactionId;
         this.from = from;
@@ -21,8 +23,8 @@ public class Transaction {
         this.publicKey = publicKey;
         this.creationTime = System.currentTimeMillis();
     }
-    // Sets unique signature for each block
-    // Is called by SignatureUtils
+
+    // Return Transaction details to the caller
 
     public void setSignature(String signature) {
         this.signature = signature;
